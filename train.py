@@ -439,7 +439,7 @@ def main():
 		sum(p.numel() for p in model.parameters() if p.requires_grad)))
 
 	# for training on multiple GPUs.
-	# Use CUDA_VISIBLE_DEVICES=0,1 to specify which GPUs to use
+	os.environ["CUDA_VISIBLE_DEVICES"]="1"
 	if args.multigpu:
 		model = torch.nn.DataParallel(model).cuda()
 	else:
