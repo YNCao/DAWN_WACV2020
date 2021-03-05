@@ -39,7 +39,7 @@ except:
 parser = argparse.ArgumentParser(description='PyTorch Training')
 parser.add_argument('--drop', default=10, type=int, 
 					help='drop learning rate')
-parser.add_argument('--epochs', default=300, type=int,
+parser.add_argument('--epochs', default=301, type=int,
 					help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int,
 					help='manual epoch number (useful on restarts)')
@@ -52,7 +52,7 @@ parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,
 					help='weight decay (default: 1e-4)')
 parser.add_argument('--print-freq', '-p', default=50, type=int,
 					help='print frequency (default: 50)')
-parser.add_argument('--resume', default='', type=str,
+parser.add_argument('--resume', default='./runs/dwnn_cifar-10_32/checkpoint.pth.tar', type=str,
 					help='path to latest checkpoint (default: none)')
 parser.add_argument('--name', default='DenseNet_BC_100_12', type=str,
 					help='name of experiment')
@@ -86,7 +86,7 @@ parser.add_argument('--valdir', default='dataset/kth/test',
 					type=str, help='KTH image dir for validation')
 
 # ---- Monkey test
-parser.add_argument('--monkey', default=False, action="store_true")
+parser.add_argument('--monkey', default=True, action="store_true")
 
 # ----- Pretrained imageNet
 parser.add_argument('--pretrained', default=False, action="store_true")
@@ -178,7 +178,7 @@ def main():
 	print(sys.argv)
 	
 	# Global configuration of the datasets
-	USE_COLOR = not args.monkey
+	USE_COLOR = args.monkey
 	kwargs = {'num_workers': 4, 'pin_memory': True}
 
 	##############################
@@ -439,7 +439,7 @@ def main():
 		sum(p.numel() for p in model.parameters() if p.requires_grad)))
 
 	# for training on multiple GPUs.
-	os.environ["CUDA_VISIBLE_DEVICES"]="1"
+	os.environ["CUDA_VISIBLE_DEVICES"]="6"
 	if args.multigpu:
 		model = torch.nn.DataParallel(model).cuda()
 	else:
